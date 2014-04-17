@@ -87,8 +87,8 @@ public class DispatchServlet extends HttpServlet {
                     requestWrapper.getRouteParams());
 
             if (handler != null) {
-                response.setContentType("text/html");
-                response.setStatus(200);
+                responseWrapper.setStatus(200);
+                responseWrapper.addHeader("Content-type", "text/html");
 
                 try {
                     Action action = handler.handle(requestWrapper, responseWrapper);
@@ -97,8 +97,14 @@ public class DispatchServlet extends HttpServlet {
                         response.getWriter().println(action.getOutput());
                         response.flushBuffer();
                     }
+
+                    System.out.println(
+                            "matched route => " +
+                                    request.getMethod() + " " + request.getPathInfo() + " " +
+                                    responseWrapper.getStatus() + " " + request.getRemoteAddr());
+
                 } catch (Exception ex) {
-                    response.setStatus(500);
+                    responseWrapper.setStatus(500);
                     ex.printStackTrace();
                 }
             }
