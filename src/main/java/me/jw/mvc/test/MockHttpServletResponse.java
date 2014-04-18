@@ -10,6 +10,7 @@ import java.util.Locale;
 
 public class MockHttpServletResponse implements HttpServletResponse {
     private ByteArrayOutputStream baos;
+    private int status;
 
     public MockHttpServletResponse() {
         baos = new ByteArrayOutputStream();
@@ -92,9 +93,9 @@ public class MockHttpServletResponse implements HttpServletResponse {
 
     @Override
     public void setStatus(int i) {
-
+        this.status = i;
     }
-
+    
     @Override
     public void setStatus(int i, String s) {
 
@@ -177,6 +178,10 @@ public class MockHttpServletResponse implements HttpServletResponse {
 
     public String getResponseString() {
         return baos.toString().trim();
+    }
+
+    public int getStatus() {
+        return status;
     }
 }
 

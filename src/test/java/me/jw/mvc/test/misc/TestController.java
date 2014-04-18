@@ -18,5 +18,13 @@ public class TestController extends AbstractController {
                 return new Raw(request.getPostParam("param1"));
             }
         });
+
+        get("/error", new IRouteHandler() {
+            @Override
+            public Action handle(Request request, Response response) {
+                response.setStatus(500);
+                return new Raw("error");
+            }
+        });
     }
 }

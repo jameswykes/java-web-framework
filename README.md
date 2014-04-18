@@ -1,4 +1,4 @@
-Lightweight Java Web Framework
+Paper - A lightweight Java web framework
 
 ### Setting up your project
 
@@ -215,6 +215,59 @@ the getModelFromJson() method, as follows:
 
 ```java
 getModelFromJson (request, Person.class);
+```
+
+### Testing
+
+The framework provides and easy way to test your application without needing
+to deploy to a server. You can mock requests to a controller and examine the
+output from inside a unit test.
+
+You can create a TestClient for a controller under test and invoke HTTP methods
+on a route.
+
+See the following example:
+
+```java
+public class ControllerTest extends TestCase {
+    public void testGet() {
+        try {
+            TestClient client = new TestClient(Controller.class);
+            TestClientResponse response = client.get("/");
+
+            assertEquals(response.getRaw(), "test");
+            assertEquals(response.getStatus(), 200);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            fail();
+        }
+    }
+```
+
+The post() method of the TestClient allows POST parameters to be supplied
+to the route.
+
+See the example below:
+
+```java
+public class ControllerTest extends TestCase {
+    public void testPost() {
+        try {
+            TestClient client = new TestClient(Controller.class);
+
+            HashMap<String, String> params = new HashMap<String, String>();
+            params.put("param1", "test");
+
+            TestClientResponse response = client.post("/", params);
+            assertEquals(response.getRaw(), "test");
+            assertEquals(response.getStatus(), 200);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            fail();
+        }
+    }
 ```
 
 ### Build / Run

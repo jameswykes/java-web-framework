@@ -21,7 +21,7 @@ public class TestClient {
         }
     }
 
-    public String get(String route) throws Exception {
+    public TestClientResponse get(String route) throws Exception {
         DispatchServlet dispatchServlet = new DispatchServlet();
         MockHttpServletRequest request = new MockHttpServletRequest(
                 "GET", route, null
@@ -30,7 +30,7 @@ public class TestClient {
 
         try {
             dispatchServlet.dispatch(request, response);
-            return response.getResponseString();
+            return new TestClientResponse(response.getStatus(), response.getResponseString());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -38,16 +38,16 @@ public class TestClient {
         throw new Exception("No response received from route " + route);
     }
 
-    public String post(String route, HashMap<String, String> data) throws Exception {
+    public TestClientResponse post(String route, HashMap<String, String> data) throws Exception {
         DispatchServlet dispatchServlet = new DispatchServlet();
         MockHttpServletRequest request = new MockHttpServletRequest(
                 "POST", route, data
         );
         MockHttpServletResponse response = new MockHttpServletResponse();
-        
+
         try {
             dispatchServlet.dispatch(request, response);
-            return response.getResponseString();
+            return new TestClientResponse(response.getStatus(), response.getResponseString());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
