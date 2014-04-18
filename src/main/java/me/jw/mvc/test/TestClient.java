@@ -5,8 +5,8 @@ import me.jw.mvc.core.AbstractController;
 
 import java.util.HashMap;
 
-/* allows unit tests to manually invoke DispatchServlet with
-   test parameters to test controller functionality without the need
+/* allows unit tests to invoke DispatchServlet with
+   parameters to test controller functionality without the need
    to run on a server */
 
 public class TestClient {
@@ -30,7 +30,11 @@ public class TestClient {
 
         try {
             dispatchServlet.dispatch(request, response);
-            return new TestClientResponse(response.getStatus(), response.getResponseString());
+            return new TestClientResponse(
+                    response.getStatus(),
+                    response.getContentType(),
+                    response.getResponseString());
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -47,7 +51,11 @@ public class TestClient {
 
         try {
             dispatchServlet.dispatch(request, response);
-            return new TestClientResponse(response.getStatus(), response.getResponseString());
+            return new TestClientResponse(
+                    response.getStatus(),
+                    response.getContentType(),
+                    response.getResponseString());
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }

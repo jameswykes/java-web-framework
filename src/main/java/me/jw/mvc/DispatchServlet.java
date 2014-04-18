@@ -88,11 +88,26 @@ public class DispatchServlet extends HttpServlet {
 
             if (handler != null) {
                 responseWrapper.setStatus(200);
-                responseWrapper.addHeader("Content-type", "text/html");
 
                 try {
                     Action action = handler.handle(requestWrapper, responseWrapper);
+
                     if (action != null) {
+                        if (action instanceof Json
+                                && responseWrapper.getContentType() == null) {
+                            responseWrapper.setContentType("application/json");
+                        }
+
+                        if (action instanceof View
+                                && responseWrapper.getContentType() == null) {
+                            responseWrapper.setContentType("text/html");
+                        }
+
+                        if (action instanceof Raw
+                                && responseWrapper.getContentType() == null) {
+                            responseWrapper.setContentType("text/plain");
+                        }
+
                         action.prepare();
                         response.getWriter().println(action.getOutput());
                         response.flushBuffer();
@@ -101,7 +116,8 @@ public class DispatchServlet extends HttpServlet {
                     System.out.println(
                             "matched route => " +
                                     request.getMethod() + " " + request.getPathInfo() + " " +
-                                    responseWrapper.getStatus() + " " + request.getRemoteAddr());
+                                    responseWrapper.getStatus() + " " + request.getRemoteAddr()
+                    );
 
                 } catch (Exception ex) {
                     responseWrapper.setStatus(500);

@@ -22,6 +22,18 @@ public class Response {
         }
     }
 
+    public boolean containsHeader(String type) {
+        return raw.containsHeader(type);
+    }
+
+    public void setContentType(String type) {
+        raw.setContentType(type);
+    }
+
+    public String getContentType() {
+        return raw.getContentType();
+    }
+    
     public void setStatus(int status) {
         this.status = status;
         raw.setStatus(status);

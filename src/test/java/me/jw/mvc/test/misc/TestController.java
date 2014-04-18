@@ -26,5 +26,13 @@ public class TestController extends AbstractController {
                 return new Raw("error");
             }
         });
+
+        get("/test-content-type", new IRouteHandler() {
+            @Override
+            public Action handle(Request request, Response response) {
+                response.setContentType("text/html");
+                return new Raw("test");
+            }
+        });
     }
 }

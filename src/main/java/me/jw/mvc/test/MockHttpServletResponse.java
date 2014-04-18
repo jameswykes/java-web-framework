@@ -6,14 +6,18 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.Locale;
 
 public class MockHttpServletResponse implements HttpServletResponse {
     private ByteArrayOutputStream baos;
+    private HashMap<String, String> headers;
     private int status;
+    private String contentType;
 
     public MockHttpServletResponse() {
         baos = new ByteArrayOutputStream();
+        headers = new HashMap<String, String>();
     }
 
     @Override
@@ -23,7 +27,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
 
     @Override
     public boolean containsHeader(String s) {
-        return false;
+        return headers.containsKey(s);
     }
 
     @Override
@@ -72,13 +76,17 @@ public class MockHttpServletResponse implements HttpServletResponse {
     }
 
     @Override
-    public void setHeader(String s, String s2) {
-
+    public void setHeader(String type, String value) {
+        headers.put(type, value);
     }
 
     @Override
-    public void addHeader(String s, String s2) {
-
+    public void addHeader(String type, String value) {
+        if (type.equals("Content-type")) {
+            setContentType(value);
+        } else {
+            headers.put(type, value);
+        }
     }
 
     @Override
@@ -92,10 +100,10 @@ public class MockHttpServletResponse implements HttpServletResponse {
     }
 
     @Override
-    public void setStatus(int i) {
-        this.status = i;
+    public void setStatus(int status) {
+        this.status = status;
     }
-    
+
     @Override
     public void setStatus(int i, String s) {
 
@@ -108,9 +116,9 @@ public class MockHttpServletResponse implements HttpServletResponse {
 
     @Override
     public String getContentType() {
-        return null;
+        return contentType;
     }
-
+    
     @Override
     public ServletOutputStream getOutputStream() throws IOException {
         return null;
@@ -132,8 +140,8 @@ public class MockHttpServletResponse implements HttpServletResponse {
     }
 
     @Override
-    public void setContentType(String s) {
-
+    public void setContentType(String value) {
+        this.contentType = value;
     }
 
     @Override
