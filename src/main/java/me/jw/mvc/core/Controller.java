@@ -8,7 +8,7 @@ import me.jw.mvc.helpers.ReflectionHelper;
 
 import com.google.gson.Gson;
 
-public abstract class AbstractController {
+public abstract class Controller {
     // reads POST vars and populates the model
     public <T> T getModel(Request request, Class<T> type) {
         T output = null;

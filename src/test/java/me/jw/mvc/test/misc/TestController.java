@@ -2,7 +2,7 @@ package me.jw.mvc.test.misc;
 
 import me.jw.mvc.core.*;
 
-public class TestController extends AbstractController {
+public class TestController extends Controller {
     @Override
     public void init() {
         get("/", new IRouteHandler() {

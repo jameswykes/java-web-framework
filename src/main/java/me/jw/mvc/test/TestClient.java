@@ -1,7 +1,7 @@
 package me.jw.mvc.test;
 
 import me.jw.mvc.DispatchServlet;
-import me.jw.mvc.core.AbstractController;
+import me.jw.mvc.core.Controller;
 
 import java.util.HashMap;
 
@@ -10,9 +10,9 @@ import java.util.HashMap;
    to run on a server */
 
 public class TestClient {
-    private AbstractController controller;
+    private Controller controller;
 
-    public <T extends AbstractController> TestClient(Class<T> className) {
+    public <T extends Controller> TestClient(Class<T> className) {
         try {
             controller = className.newInstance();
             controller.init();
@@ -55,7 +55,7 @@ public class TestClient {
                     response.getStatus(),
                     response.getContentType(),
                     response.getResponseString());
-            
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }

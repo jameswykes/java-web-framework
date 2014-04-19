@@ -1,36 +1,36 @@
 package me.jw.mvc;
 
 import me.jw.mvc.core.*;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletHandler;
 import org.reflections.Reflections;
+import org.reflections.util.ClasspathHelper;
+import org.reflections.util.ConfigurationBuilder;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.Enumeration;
 import java.util.Set;
 
 public class DispatchServlet extends HttpServlet {
-    private boolean initialised;
+    @Override
+    public void init() {
+        try {
+            Reflections reflections = new Reflections(
+                    new ConfigurationBuilder()
+                            .setUrls(ClasspathHelper
+                                    .forClassLoader(
+                                            ClasspathHelper.classLoaders()))
+            );
 
-    private synchronized void initControllers() throws Exception {
-        String controllerPackageNames = getInitParameter("controllerPackages");
-        String[] names = controllerPackageNames.split(",");
-
-        for (String packageName : names) {
-            Reflections reflections = new Reflections(packageName);
-
-            // find subtypes of AbstractController and call init() on them to add the routes
-            Set<Class<? extends AbstractController>> subTypes =
-                    reflections.getSubTypesOf(AbstractController.class);
+            Set<Class<? extends Controller>> subTypes =
+                    reflections.getSubTypesOf(Controller.class);
 
             for (Class<?> controller : subTypes) {
                 try {
-                    AbstractController c = (AbstractController) controller.newInstance();
+                    Controller c = (Controller) controller.newInstance();
                     c.init();
                 } catch (InstantiationException e) {
                     e.printStackTrace();
@@ -38,32 +38,16 @@ public class DispatchServlet extends HttpServlet {
                     e.printStackTrace();
                 }
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-
-        initialised = true;
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (!initialised) {
-            try {
-                initControllers();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-
         dispatch(request, response);
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if (!initialised) {
-            try {
-                initControllers();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-
         dispatch(request, response);
     }
 
@@ -124,6 +108,25 @@ public class DispatchServlet extends HttpServlet {
                     ex.printStackTrace();
                 }
             }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        Server server = new Server(8080);
+
+        ServletHandler servletHandler = new ServletHandler();
+        servletHandler.addServletWithMapping(DispatchServlet.class, "/*");
+
+        server.setHandler(servletHandler);
+
+        try {
+            server.start();
+            server.join();
+
+            System.out.println("starting server on port 8080");
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }

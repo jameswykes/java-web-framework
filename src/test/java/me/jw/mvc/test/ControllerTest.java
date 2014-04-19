@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 public class ControllerTest extends TestCase {
     public void testGetModel() {
-        class TestController extends AbstractController {
+        class TestController extends Controller {
             public void init() {
             }
         }
@@ -32,7 +32,7 @@ public class ControllerTest extends TestCase {
     }
 
     public void testAddRoute() {
-        class TestController extends AbstractController {
+        class TestController extends Controller {
             public void init() {
                 get("/test/get", new IRouteHandler() {
                     @Override
