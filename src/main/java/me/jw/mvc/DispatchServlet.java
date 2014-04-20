@@ -3,6 +3,8 @@ package me.jw.mvc;
 import me.jw.mvc.core.*;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerCollection;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
@@ -119,7 +121,14 @@ public class DispatchServlet extends HttpServlet {
         ServletHandler servletHandler = new ServletHandler();
         servletHandler.addServletWithMapping(DispatchServlet.class, "/*");
 
-        server.setHandler(servletHandler);
+        ResourceHandler resourceHandler = new ResourceHandler ();
+        resourceHandler.setResourceBase("./static");
+
+        HandlerCollection collection = new HandlerCollection();
+        collection.addHandler(resourceHandler);
+        collection.addHandler(servletHandler);
+
+        server.setHandler(collection);
 
         try {
             server.start();
