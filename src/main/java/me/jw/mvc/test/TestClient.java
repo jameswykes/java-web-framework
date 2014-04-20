@@ -3,6 +3,7 @@ package me.jw.mvc.test;
 import me.jw.mvc.DispatchServlet;
 import me.jw.mvc.core.Controller;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 /* allows unit tests to invoke DispatchServlet with
@@ -11,6 +12,7 @@ import java.util.HashMap;
 
 public class TestClient {
     private Controller controller;
+    private HttpSession session;
 
     public <T extends Controller> TestClient(Class<T> className) {
         try {
@@ -26,6 +28,10 @@ public class TestClient {
         MockHttpServletRequest request = new MockHttpServletRequest(
                 "GET", route, null
         );
+        if (session != null) {
+            request.setSession(session);
+        }
+
         MockHttpServletResponse response = new MockHttpServletResponse();
 
         try {
@@ -47,6 +53,10 @@ public class TestClient {
         MockHttpServletRequest request = new MockHttpServletRequest(
                 "POST", route, data
         );
+        if (session != null) {
+            request.setSession(session);
+        }
+
         MockHttpServletResponse response = new MockHttpServletResponse();
 
         try {
@@ -61,5 +71,12 @@ public class TestClient {
         }
 
         throw new Exception("No response received from route " + route);
+    }
+
+    public void setSessionData(HashMap<String, Object> data) {
+        session = new MockHttpSession();
+        for (String key : data.keySet()) {
+            session.setAttribute(key, data.get(key));
+        }
     }
 }

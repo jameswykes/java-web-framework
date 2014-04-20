@@ -21,6 +21,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
     private String method;
     private String path;
     private HashMap<String, String> post;
+    private HttpSession session;
 
     public MockHttpServletRequest(String method, String path, HashMap<String, String> post) {
         this.method = method;
@@ -128,14 +129,14 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     @Override
     public HttpSession getSession(boolean b) {
-        return null;
+        return session;
     }
 
     @Override
     public HttpSession getSession() {
-        return null;
+        return session;
     }
-
+    
     @Override
     public boolean isRequestedSessionIdValid() {
         return false;
@@ -316,6 +317,10 @@ public class MockHttpServletRequest implements HttpServletRequest {
     @Override
     public int getLocalPort() {
         return 0;
+    }
+
+    public void setSession(HttpSession session) {
+        this.session = session;
     }
 }
 

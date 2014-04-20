@@ -34,5 +34,12 @@ public class TestController extends Controller {
                 return new Raw("test");
             }
         });
+
+        get("/session-test", new IRouteHandler() {
+            @Override
+            public Action handle(Request request, Response response) {
+                return new Raw(request.getSession().attribute("sessionValue"));
+            }
+        });
     }
 }

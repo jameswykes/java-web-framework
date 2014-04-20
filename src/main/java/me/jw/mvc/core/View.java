@@ -31,10 +31,7 @@ public abstract class View extends Action {
             }
         }
     }
-
-    // implemented by sub-classes, and the place
-    // where dynamic content is generated and merged
-    // into the view via setValue ();
+    
     public abstract void render();
 
     @Override
@@ -46,9 +43,6 @@ public abstract class View extends Action {
         setOutput(html);
     }
 
-    // called by sub-classes
-    // values from the model are merged into the view
-    // int prepare ();
     protected void setValue(String key, String value) {
         values.put(key, value);
     }

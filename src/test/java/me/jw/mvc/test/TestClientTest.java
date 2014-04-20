@@ -50,4 +50,23 @@ public class TestClientTest extends TestCase {
             fail();
         }
     }
+
+    public void testSession() {
+        try {
+            TestClient client = new TestClient(TestController.class);
+
+            HashMap<String, Object> data = new HashMap<String, Object>();
+            data.put("sessionValue", "test");
+
+            client.setSessionData(data);
+
+            TestClientResponse response = client.get("/session-test");
+            assertEquals(response.getRaw(), "test");
+            assertEquals(response.getStatus(), 200);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            fail();
+        }
+    }
 }
