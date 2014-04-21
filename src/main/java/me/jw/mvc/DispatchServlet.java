@@ -5,6 +5,7 @@ import org.apache.commons.io.IOUtils;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.HandlerCollection;
 import org.eclipse.jetty.server.handler.ResourceHandler;
+import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.reflections.Reflections;
 import org.reflections.util.ClasspathHelper;
@@ -121,13 +122,16 @@ public class DispatchServlet extends HttpServlet {
         ServletHandler servletHandler = new ServletHandler();
         servletHandler.addServletWithMapping(DispatchServlet.class, "/*");
 
-        ResourceHandler resourceHandler = new ResourceHandler ();
+        ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setResourceBase("./static");
+
+        SessionHandler sessionHandler = new SessionHandler();
 
         HandlerCollection collection = new HandlerCollection();
         collection.addHandler(resourceHandler);
         collection.addHandler(servletHandler);
-
+        collection.addHandler(sessionHandler);
+        
         server.setHandler(collection);
 
         try {
