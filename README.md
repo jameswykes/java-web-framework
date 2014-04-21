@@ -1,88 +1,13 @@
-Paper - A lightweight Java web framework
+A lightweight Java web framework
 
-### Setting up your project
-
-Create a new project with maven with the archetype maven-archetype-webapp.
-The structure of the application should be generated as follows:
-
-```
-src /
-    main/
-        java/
-        resources/
-        webapp/
-            WEB-INF/
-                web.xml
-    test/
-        java/
-```
-
-### Adding dependencies
-
-Add the JAR mvc-x.x.x-all.jar to the project in the lib directory inside WEB-INF
-as follows:
-
-```
-src/main/webapp/WEB-INF/lib/mvc-x.x.x-all.jar
-```
-
-and reference from the pom.xml. Make sure that you
-reference the correct version.
-
-```xml
-<dependency>
-    <groupId>me.jw</groupId>
-    <artifactId>mvc</artifactId>
-    <version>0.0.1</version>
-    <scope>system</scope>
-    <systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/mvc-0.0.1-all.jar</systemPath>
-</dependency>
-```
-
-If you're using Jetty, add the plugin to your pom.xml file
-
-```xml
-<build>
-    <finalName>my-application</finalName>
-    <plugins>
-        <plugin>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-maven-plugin</artifactId>
-            <version>9.0.5.v20130815</version>
-            <configuration>
-                <scanIntervalSeconds>1</scanIntervalSeconds>
-            </configuration>
-        </plugin>
-    </plugins>
-</build>
-```
-
-### Setting up the web.xml
-
-Forward all requests to the framework by editing the web.xml as follows:
-
-```xml
-<servlet>
-    <servlet-name>dispatch</servlet-name>
-    <servlet-class>me.jw.mvc.DispatchServlet</servlet-class>
-    <init-param>
-        <param-name>controllerPackages</param-name>
-        <param-value>com.package.controllers</param-value>
-    </init-param>
-</servlet>
-
-<servlet-mapping>
-    <servlet-name>dispatch</servlet-name>
-    <url-pattern>/*</url-pattern>
-</servlet-mapping>
-```
+This documentation is currently in progress.
 
 ### Adding a controller
 
-2. Define a controller by extending AbstractController
+Define a controller by extending AbstractController
 
 ```java
-public class DefaultController extends AbstractController {
+public class DefaultController extends Controller {
     public void init () {
     }
 }
@@ -269,24 +194,3 @@ public class ControllerTest extends TestCase {
         }
     }
 ```
-
-### Build / Run
-
-This documentation assumes you are running with Jetty and Maven. You can
-quickly build and run your project by first compiling with the following:
-
-```
-mvn compile
-```
-
-Then, launch Jetty via the Maven plugin
-
-```
-mvn jetty:run
-```
-
-You can then view your project at http://localhost:8080
-
-Additional Jetty configuration can take place in a jetty-web.xml file
-placed inside the WEB-INF directory.
-
