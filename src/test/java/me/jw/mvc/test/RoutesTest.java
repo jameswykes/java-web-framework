@@ -34,6 +34,29 @@ public class RoutesTest extends TestCase {
         assertNotNull(test2);
     }
 
+    public void testWildcard() {
+        IRouteHandler handler = new IRouteHandler() {
+            @Override
+            public Action handle(Request request, Response response) {
+                return new Json("hello");
+            }
+        };
+
+        Routes routes = Routes.getInstance();
+        routes.clear();
+        routes.addRoute("GET", "/hello/*", handler);
+        routes.addRoute("GET", "/hello/images/*.jpg", handler);
+
+        IRouteHandler test1 = routes.matchRoute("GET", "/hello/1", new HashMap<String, String>());
+        assertNotNull(test1);
+
+        IRouteHandler test2 = routes.matchRoute("GET", "/hello/images/1.jpg", new HashMap<String, String>());
+        assertNotNull(test2);
+
+        IRouteHandler test3 = routes.matchRoute("GET", "/hello/images/1.png", new HashMap<String, String>());
+        assertNull(test3);
+    }
+
     public void testRouteExecutionOrder() {
         IRouteHandler handler1 = new IRouteHandler() {
             @Override
