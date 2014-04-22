@@ -61,7 +61,8 @@ public class DispatchServlet extends HttpServlet {
         requestWrapper.setRaw(request);
         requestWrapper.setBody(IOUtils.toString(request.getInputStream()));
         requestWrapper.setQueryString(request.getQueryString());
-
+        requestWrapper.setRoute(request.getPathInfo());
+        
         try {
             requestWrapper.parseRequest();
 
@@ -131,7 +132,7 @@ public class DispatchServlet extends HttpServlet {
         collection.addHandler(resourceHandler);
         collection.addHandler(servletHandler);
         collection.addHandler(sessionHandler);
-        
+
         server.setHandler(collection);
 
         try {
