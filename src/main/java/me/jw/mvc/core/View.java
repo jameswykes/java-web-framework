@@ -5,24 +5,28 @@ import java.util.HashMap;
 
 import org.apache.commons.io.FileUtils;
 
-public abstract class View extends Action {
+public class View extends Action {
     private String html;
-    private HashMap<String, String> values;
+    private String templateName;
+    private HashMap<String, String> extras;
 
     public View() {
-        this.loadView();
-        this.values = new HashMap<String, String>();
+        this.extras = new HashMap<String, String>();
+        this.loadTemplate();
     }
 
-    private void loadView() {
-        String name = getClass().getSimpleName().replace("View", "").toLowerCase();
+    public View(String templateName) {
+        this.extras = new HashMap<String, String>();
+        this.templateName = templateName;
+        this.loadTemplate();
+    }
 
-        File templateDirectory = new File("views");
-        if (!templateDirectory.exists()) {
-            templateDirectory.mkdir();
+    private void loadTemplate() {
+        if (templateName == null) {
+            templateName = getClass().getSimpleName().replace("View", "").toLowerCase();
         }
 
-        File viewFile = new File("views/" + name + ".html");
+        File viewFile = new File(templateName);
         if (viewFile.exists()) {
             try {
                 html = FileUtils.readFileToString(viewFile);
@@ -31,35 +35,28 @@ public abstract class View extends Action {
             }
         }
     }
-    
-    public abstract void render();
 
     @Override
     public void prepare() {
-        render();
-        for (String key : values.keySet()) {
-            html = html.replace(key, (values.get(key) != null) ? values.get(key) : "");
+        for (String key : extras.keySet()) {
+            html = html.replace(key, (extras.get(key) != null) ? extras.get(key) : "");
         }
         setOutput(html);
     }
 
-    protected void setValue(String key, String value) {
-        values.put(key, value);
+    public void setValue(String key, String value) {
+        extras.put(key, value);
     }
 
-    protected void setValue(String key, int value) {
-        values.put(key, String.valueOf(value));
+    public void setValue(String key, int value) {
+        extras.put(key, String.valueOf(value));
     }
 
-    protected void setValue(String key, long value) {
-        values.put(key, String.valueOf(value));
+    public void setValue(String key, long value) {
+        extras.put(key, String.valueOf(value));
     }
 
-    protected void setValue(String key, double value) {
-        values.put(key, String.valueOf(value));
-    }
-
-    public void setExtraValue(String key, String value) {
-        values.put(key, value);
+    public void setValue(String key, double value) {
+        extras.put(key, String.valueOf(value));
     }
 }
