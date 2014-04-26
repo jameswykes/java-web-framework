@@ -83,6 +83,17 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>com.rimerosolutions.maven.plugins</groupId>
+                <artifactId>wrapper-maven-plugin</artifactId>
+                <version>0.0.2</version>
+                <configuration>
+                    <baseDistributionUrl>
+                    </baseDistributionUrl>
+                    <wrapperDirectory>${basedir}/maven</wrapperDirectory>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
