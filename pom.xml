@@ -5,7 +5,7 @@
     <groupId>me.jw</groupId>
     <artifactId>mvc</artifactId>
     <version>0.0.1</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>mvc</name>
     <url>http://maven.apache.org</url>
@@ -94,7 +94,28 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <configuration>
+                            <tasks>
+                                <copy file="${project.basedir}/target/mvc-0.0.1-all.jar" tofile="${project.basedir}/example/src/main/webapp/WEB-INF/lib/mvc-0.0.1-all.jar"/>
+                            </tasks>
+                        </configuration>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
+
+    <modules>
+        <module>example</module>
+    </modules>
 
 </project>
