@@ -2,13 +2,8 @@ package me.jw.mvc.test;
 
 import java.util.HashMap;
 
-import me.jw.mvc.core.Action;
-import me.jw.mvc.core.IRouteHandler;
-import me.jw.mvc.core.Json;
-import me.jw.mvc.core.Raw;
-import me.jw.mvc.core.Request;
-import me.jw.mvc.core.Response;
-import me.jw.mvc.core.Routes;
+import me.jw.mvc.core.*;
+import me.jw.mvc.core.Text;
 import junit.framework.TestCase;
 
 public class RoutesTest extends TestCase {
@@ -61,14 +56,14 @@ public class RoutesTest extends TestCase {
         IRouteHandler handler1 = new IRouteHandler() {
             @Override
             public Action handle(Request request, Response response) {
-                return new Raw("handler1");
+                return new Text("handler1");
             }
         };
 
         IRouteHandler handler2 = new IRouteHandler() {
             @Override
             public Action handle(Request request, Response response) {
-                return new Raw("handler2");
+                return new Text("handler2");
             }
         };
 
@@ -80,6 +75,6 @@ public class RoutesTest extends TestCase {
         Action action = route.handle(null, null);
         action.prepare();
 
-        assertEquals("handler1", action.getOutput());
+        assertEquals("handler1", action.getOutputAsString());
     }
 }

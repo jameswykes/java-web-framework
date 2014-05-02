@@ -2,19 +2,25 @@ package me.jw.mvc.core;
 
 import com.google.gson.Gson;
 
+import java.io.UnsupportedEncodingException;
+
 public class Json extends Action {
     static Gson g;
-    private Object object;
+    private Object data;
 
-    public Json(Object object) {
+    public Json(Object data) {
         if (g == null) {
             g = new Gson();
         }
-        this.object = object;
+        this.data = data;
     }
 
     @Override
     public void prepare() {
-        setOutput(g.toJson(object));
+        try {
+            setOutput(g.toJson(data).getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException ex) {
+            setOutput(g.toJson(data).getBytes());
+        }
     }
 }

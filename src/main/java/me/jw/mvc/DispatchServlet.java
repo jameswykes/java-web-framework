@@ -62,7 +62,7 @@ public class DispatchServlet extends HttpServlet {
         requestWrapper.setBody(IOUtils.toString(request.getInputStream()));
         requestWrapper.setQueryString(request.getQueryString());
         requestWrapper.setRoute(request.getPathInfo());
-        
+
         try {
             requestWrapper.parseRequest();
 
@@ -81,23 +81,42 @@ public class DispatchServlet extends HttpServlet {
                     Action action = handler.handle(requestWrapper, responseWrapper);
 
                     if (action != null) {
+
                         if (action instanceof Json
                                 && responseWrapper.getContentType() == null) {
-                            responseWrapper.setContentType("application/json");
-                        }
 
-                        if (action instanceof View
+                            action.prepare();
+                            response.setContentType("application/json");
+                            response.getWriter().println(action.getOutputAsString());
+
+                        } else if (action instanceof View
                                 && responseWrapper.getContentType() == null) {
-                            responseWrapper.setContentType("text/html");
-                        }
 
-                        if (action instanceof Raw
+                            action.prepare();
+                            response.setContentType("text/html");
+                            response.getWriter().println(action.getOutputAsString());
+
+                        } else if (action instanceof Text
                                 && responseWrapper.getContentType() == null) {
-                            responseWrapper.setContentType("text/plain");
+
+                            action.prepare();
+                            response.setContentType("text/plain");
+                            response.getWriter().println(action.getOutputAsString());
+
+                        } else if (action instanceof Binary
+                                && responseWrapper.getContentType() == null) {
+
+                            action.prepare();
+                            response.setContentType("application/octet-stream");
+                            response.getOutputStream().write(action.getOutput());
+
+                        } else {
+                            
+                            action.prepare();
+                            response.getWriter().println(action.getOutputAsString());
+
                         }
 
-                        action.prepare();
-                        response.getWriter().println(action.getOutput());
                         response.flushBuffer();
                     }
 
