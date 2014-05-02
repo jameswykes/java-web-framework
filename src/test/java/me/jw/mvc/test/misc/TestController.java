@@ -8,14 +8,14 @@ public class TestController extends Controller {
         get("/", new IRouteHandler() {
             @Override
             public Action handle(Request request, Response response) {
-                return new Raw("test");
+                return new Text("test");
             }
         });
 
         post("/", new IRouteHandler() {
             @Override
             public Action handle(Request request, Response response) {
-                return new Raw(request.getPostParam("param1"));
+                return new Text(request.getPostParam("param1"));
             }
         });
 
@@ -23,7 +23,7 @@ public class TestController extends Controller {
             @Override
             public Action handle(Request request, Response response) {
                 response.setStatus(500);
-                return new Raw("error");
+                return new Text("error");
             }
         });
 
@@ -31,14 +31,14 @@ public class TestController extends Controller {
             @Override
             public Action handle(Request request, Response response) {
                 response.setContentType("text/html");
-                return new Raw("test");
+                return new Text("test");
             }
         });
 
         get("/session-test", new IRouteHandler() {
             @Override
             public Action handle(Request request, Response response) {
-                return new Raw(request.getSession().attribute("sessionValue"));
+                return new Text(request.getSession().attribute("sessionValue").toString());
             }
         });
     }

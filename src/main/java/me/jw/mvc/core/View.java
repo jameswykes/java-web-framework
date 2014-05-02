@@ -1,6 +1,7 @@
 package me.jw.mvc.core;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 import org.apache.commons.io.FileUtils;
@@ -41,9 +42,14 @@ public class View extends Action {
         for (String key : extras.keySet()) {
             html = html.replace(key, (extras.get(key) != null) ? extras.get(key) : "");
         }
-        setOutput(html);
-    }
 
+        try {
+            setOutput(html.getBytes("UTF-8"));
+        } catch (UnsupportedEncodingException ex) {
+            setOutput(html.getBytes());
+        }
+    }
+    
     public void setValue(String key, String value) {
         extras.put(key, value);
     }

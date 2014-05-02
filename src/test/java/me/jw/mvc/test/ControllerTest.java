@@ -37,28 +37,28 @@ public class ControllerTest extends TestCase {
                 get("/test/get", new IRouteHandler() {
                     @Override
                     public Action handle(Request request, Response response) {
-                        return new Raw("ok");
+                        return new Text("ok");
                     }
                 });
 
                 post("/test/post", new IRouteHandler() {
                     @Override
                     public Action handle(Request request, Response response) {
-                        return new Raw("ok");
+                        return new Text("ok");
                     }
                 });
 
                 put("/test/put", new IRouteHandler() {
                     @Override
                     public Action handle(Request request, Response response) {
-                        return new Raw("ok");
+                        return new Text("ok");
                     }
                 });
 
                 delete("/test/delete", new IRouteHandler() {
                     @Override
                     public Action handle(Request request, Response response) {
-                        return new Raw("ok");
+                        return new Text("ok");
                     }
                 });
             }
