@@ -29,13 +29,15 @@ public class HttpHelper {
     }
 
     public static String toQueryString(HashMap<String, String> params) {
-        StringBuilder output = new StringBuilder();
-        output.append("?");
+        StringBuilder sb = new StringBuilder();
+        sb.append("?");
         for (String key : params.keySet()) {
-            output.append(key);
-            output.append("=");
-            output.append(URLEncoder.encode(params.get(key)));
+            sb.append(key);
+            sb.append("=");
+            sb.append(URLEncoder.encode(params.get(key)));
+            sb.append("&");
         }
-        return output.toString();
+        String output = sb.toString();
+        return output.substring(0, output.length() - 1);
     }
 }
