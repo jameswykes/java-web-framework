@@ -4,7 +4,7 @@
 
     <groupId>me.jw</groupId>
     <artifactId>java-web-framework</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <packaging>jar</packaging>
 
     <name>java-web-framework</name>
