@@ -26,7 +26,7 @@ public class TestClient {
     public TestClientResponse get(String route) throws Exception {
         DispatchServlet dispatchServlet = new DispatchServlet();
         MockHttpServletRequest request = new MockHttpServletRequest(
-                "GET", route, null
+                "GET", route, ""
         );
         if (session != null) {
             request.setSession(session);
@@ -52,6 +52,31 @@ public class TestClient {
         DispatchServlet dispatchServlet = new DispatchServlet();
         MockHttpServletRequest request = new MockHttpServletRequest(
                 "POST", route, data
+        );
+        if (session != null) {
+            request.setSession(session);
+        }
+
+        MockHttpServletResponse response = new MockHttpServletResponse();
+
+        try {
+            dispatchServlet.dispatch(request, response);
+            return new TestClientResponse(
+                    response.getStatus(),
+                    response.getContentType(),
+                    response.getResponseString());
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        throw new Exception("No response received from route " + route);
+    }
+
+    public TestClientResponse post(String route, String body) throws Exception {
+        DispatchServlet dispatchServlet = new DispatchServlet();
+        MockHttpServletRequest request = new MockHttpServletRequest(
+                "POST", route, body
         );
         if (session != null) {
             request.setSession(session);

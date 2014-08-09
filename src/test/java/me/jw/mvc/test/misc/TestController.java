@@ -19,6 +19,15 @@ public class TestController extends Controller {
             }
         });
 
+        post("/test-post-request", new IRouteHandler() {
+            @Override
+            public Action handle(Request request, Response response) {
+                return new Text(
+                        getModelFromJson(request, TestRequest.class).getParam()
+                );
+            }
+        });
+
         get("/error", new IRouteHandler() {
             @Override
             public Action handle(Request request, Response response) {
