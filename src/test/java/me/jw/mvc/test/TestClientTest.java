@@ -1,7 +1,9 @@
 package me.jw.mvc.test;
 
+import com.google.gson.Gson;
 import junit.framework.TestCase;
 import me.jw.mvc.test.misc.TestController;
+import me.jw.mvc.test.misc.TestRequest;
 
 import java.util.HashMap;
 
@@ -27,7 +29,15 @@ public class TestClientTest extends TestCase {
             HashMap<String, String> params = new HashMap<String, String>();
             params.put("param1", "test");
 
-            TestClientResponse response = client.post("/", params);
+            TestClientResponse response = null;
+
+            response = client.post("/", params);
+            assertEquals(response.getRaw(), "test");
+            assertEquals(response.getStatus(), 200);
+
+            Gson gson = new Gson();
+            TestRequest testRequest = new TestRequest("test");
+            response = client.post("/test-post-request", gson.toJson(testRequest));
             assertEquals(response.getRaw(), "test");
             assertEquals(response.getStatus(), 200);
 
@@ -36,7 +46,7 @@ public class TestClientTest extends TestCase {
             fail();
         }
     }
-
+    
     public void testError() {
         try {
             TestClient client = new TestClient(TestController.class);

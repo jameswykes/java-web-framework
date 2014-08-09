@@ -21,12 +21,19 @@ public class MockHttpServletRequest implements HttpServletRequest {
     private String method;
     private String path;
     private HashMap<String, String> post;
+    private String body;
     private HttpSession session;
 
     public MockHttpServletRequest(String method, String path, HashMap<String, String> post) {
         this.method = method;
         this.path = path;
         this.post = post;
+    }
+
+    public MockHttpServletRequest(String method, String path, String body) {
+        this.method = method;
+        this.path = path;
+        this.body = body;
     }
 
     @Override
@@ -136,7 +143,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
     public HttpSession getSession() {
         return session;
     }
-    
+
     @Override
     public boolean isRequestedSessionIdValid() {
         return false;
@@ -201,6 +208,20 @@ public class MockHttpServletRequest implements HttpServletRequest {
                 }
             };
         }
+
+        if (body != null) {
+            final ByteArrayInputStream bais = new ByteArrayInputStream(
+                    body.getBytes()
+            );
+
+            return new ServletInputStream() {
+                @Override
+                public int read() throws IOException {
+                    return bais.read();
+                }
+            };
+        }
+
         return new ServletInputStream() {
             @Override
             public int read() throws IOException {
