@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.jw</groupId>
-    <artifactId>mvc</artifactId>
-    <version>0.0.1</version>
+    <artifactId>java-web-framework</artifactId>
+    <version>0.0.2</version>
     <packaging>jar</packaging>
 
-    <name>mvc</name>
+    <name>java-web-framework</name>
     <url>http://maven.apache.org</url>
 
     <properties>
